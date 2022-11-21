@@ -1,0 +1,56 @@
+/* *{outline: solid rebeccapurple;} */
+
+body {
+	overflow: hidden;
+	width: 100vw;
+	height: 100vh;
+	display: grid;
+	place-items: center;
+	place-self: center;
+	margin: unset;
+}
+
+ol, ul {
+	padding: 1em;
+}
+
+.row::after {
+	clear: both;
+	content: "";
+	display: table;
+	border-collapse: collapse;
+}
+
+.status {
+	margin: .5em;
+}
+
+.box {
+	aspect-ratio: 1/1;
+	width: 10vmax;
+	background-color: white;
+	border-style: solid;
+	border-width: .15em;
+	border-color: black;
+	text-align: center;
+	font-weight: bold;
+	float: left;
+	border-collapse: collapse;
+}
+
+
+.game {
+	width: 98vw;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.board {
+	place-self: center;
+}
+
+.info {
+	width: 50vmin;
+}
