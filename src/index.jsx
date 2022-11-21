@@ -2,11 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./style.css";
 
-const root = ReactDOM.createRoot(document.getElementById("root"))
+const root = ReactDOM.createRoot(document.getElementById("root")),
+		style = document.documentElement.style
 
 function Box(props) {
-	const color = props.value === "X"? "var(--second)":
-					props.value === "O"? "var(--third)":"transparent",
+	const color = props.value === "X"? "var(--third)":
+					props.value === "O"? "var(--second)":"transparent",
 			boxStyle ={
 				backgroundColor: color,
 			}
@@ -82,7 +83,6 @@ class Game extends React.Component {
 						boxes[first] === boxes[third]
 					]
 			if (conditions.every(condition => condition !== false)) {
-				console.log("here")
 				this.setState({
 					status: boxes[first],
 				})
@@ -117,56 +117,57 @@ class Game extends React.Component {
 		})
 	}
 
+	changeNextPlayerRotation() {
+		if (this.state.status !== "playing") return
+		
+		style.setProperty(
+			"--current-player",
+			this.state.next === "X"? "90deg":"270deg"
+		)
+	}
+
+	renderLoad(step, move, destiny) {
+		return(
+			<li key={move}>
+				<button onClick={() => this.loadFrom(move)}>
+					{destiny} <span>&#x21a9;</span>
+				</button>
+			</li>
+		)
+	}
+
 	render() {
+
 		const history = this.state.history,
 				moves = history.map((step, move) => {
-					const destiny = move? `Load from move: #${move}`:"Restart the game"
-					return (
-						<li key={move}>
-							<button onClick={() => this.loadFrom(move)}>
-								{destiny}
-							</button>
-						</li>
+					return this.renderLoad(
+						step, move,
+						move? `Load from move: #${move}`:"Load from start"
 					)
 				}),
 				current = history[this.state.step],
-				status = this.state.status !== "playing" ? `Winner: ${this.state.status}`:`Next Player: ${this.state.next}`
+				status = this.state.status !== "playing" ?
+							`Winner: ${this.state.status === "X"? "Player 1":"Player 2"}`:
+							`Next Player: ${this.state.next === "X"? "Player 1":"Player 2"}`
+
+		this.changeNextPlayerRotation()
 		
 		return (
-			<main className="game">
-				<section className="board">
-					<Board boxes={current.boxes} action={index => this.actionClick(index)}/>
-				</section>
-				<section className="info">
-					<article>{status}</article>
-					<ol>{moves}</ol>
-				</section>
-			</main>
-		)
-	}
-}
-
-class Website extends React.Component {
-
-	constructor(props) {
-		super(props)
-		this.state = {
-			status: ""
-		}
-	}
-
-	changeHeader(newText) {
-		this.setState({
-			status: newText
-		})
-	}
-
-	render() {
-		return (
-			<header>
-				<h1>{this.state.status}</h1>
-			</header>
-			
+			<div className="content">
+				<header className="title">
+					<h1>{status}</h1>
+					<h1 className="shadow">{status}</h1>
+				</header>
+				<main className="game">
+					<section className="board">
+						<Board boxes={current.boxes} action={index => this.actionClick(index)}/>
+					</section>
+					<section className="info">
+						<p>Loading Points</p>
+						<ol>{moves}</ol>
+					</section>
+				</main>
+			</div>
 		)
 	}
 }
