@@ -18,10 +18,16 @@ ol {
 	text-shadow: .05em .05em .25em var(--contrast);
 }
 
+header {
+	width: fit-content;
+	height: fit-content;
+}
+
 h1 {
 	background-image: linear-gradient(var(--current-player), var(--second) 0%, var(--third) 100%);
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
+	text-align: center;
 	font-size: 3em;
 }
 
@@ -89,7 +95,7 @@ section {
 	background-image: linear-gradient(var(--current-player), var(--third) 0%, var(--second) 100%);
 	text-shadow: 0 0 .15em var(--main);
 	position: relative;
-	bottom: 8.5vh;
+	bottom: 8vmin;
 	left: 1vw;
 }
 
